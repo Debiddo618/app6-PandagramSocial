@@ -6,14 +6,34 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'users/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'users/style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
 <body>
-    {% if request.user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a>
-    {% else %}
-        <a href="{% url 'login' %}">Login</a>
-    {% endif%}
+    <nav class="shadow-lg">
+        <div class="px-4 mx-auto">
+            <div class="flex justify-between">
+                <!-- Website Logo -->
+                <div>
+                    <a class="flex" href="{% url 'feed'%}">
+                        <img class="h-8 w-8" src="{% static 'users/images/social.png' %}">
+                        <span class="font-semibold text-lg text-gray-500 ml-2">Pandagram</span>
+                    </a>
+                </div>
+                <!-- Website items -->
+                <div class="space-x-1">
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'logout' %}" class="py-4 px-2 text-gray-500 font-semibold">Logout</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="py-4 px-2 text-gray-500 font-semibold">Login</a>
+                    {% endif%}
+                    <a href="{% url 'index' %}" class="py-4 px-2 text-gray-500 font-semibold">My Posts</a>
+                </div>
+            </div>
+        </div>
+    </nav>
     {% block body%}
     {% endblock %}
 </body>

@@ -1,0 +1,7 @@
+input:focus{
+    outline: none;
+    width: 100%;
+}
+caption:focus{
+    outline: none;
+}

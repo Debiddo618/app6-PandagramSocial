@@ -1,4 +1,71 @@
 {% extends "users/base.html" %}
+{% load static %}
+{% load mathfilters %}
 {% block body %}
-<h1>Homepage for users app</h1>
+    
+    <div class="flex justify-center mx-10 mt-10 p-10">
+        <h2 class="text-3xl font-normal mb-2 text-gray-500">My Posts</h2>    
+    </div>
+    <div class="flex flex-col items-center gap-3">
+        {% for post in posts %}
+        <!-- card starts here -->
+        <div class="w-1/2 p-4 rounded shadow-lg">
+            <!-- This is the user -->
+            <a href="#">
+                <div class="flex m-5">
+                    <img class="h-12 w-12 rounded-full" src="{{profile.photo.url}}">
+                    <div class="mx-2 my-2 font-bold">
+                        <span class="text-indigo-500">
+                            {{post.user}}
+                        </span>
+                    </div>
+                </div>
+            </a>
+            <!-- Image of the Post -->
+            <div>
+                <img class="object-fill w-full" src="{{post.image.url}}">
+            </div>
+            <!-- Icons -->
+            <div class="py-4">
+                <div class="icon-container flex gap-3">
+                    <a id="{{post.id}}" class="btn-like">
+                        {% if logged_user in post.likedby.all %}
+                            <img class="w-5 h-5 " src="{% static 'users/images/like.png' %}">
+                        {% else %}
+                            <img class="w-5 h-5 " src="{% static 'users/images/heart.png' %}">
+                        {% endif %}
+                    </a>
+                    <img class="w-5 h-5" src="{% static 'users/images/comment.png' %}">
+                    <img class="w-5 h-5" src="{% static 'users/images/share.png' %}">    
+                </div>
+            </div>
+            <div>
+                {% if post.likedby.count == 1 %}
+                    {{post.likedby.first}} likes this
+                {% elif post.likedby.count > 1 %}
+                    {{post.likedby.first}} and {{post.likedby.count|sub:1}} other liked this
+                {% endif %}
+            </div>
+            <!-- Title and caption -->
+            <div class="py-4">
+                <div class="font-bold text-xl mb-2">{{post.title}}</div>
+                <p class="text-gray-700 text-base">{{post.caption}}</p>
+            </div>
+        </div>
+        <!-- card ends here -->
+        {% endfor %}
+    </div>
+    <script type="text/javascript">
+        console.log('This is working')
+        window.CSRF_TOKEN ="{{ csrf_token }}"
+        $(document).on('click','.btn-like',function(){
+            var post_id = this.id
+            $.ajax({
+                method:"POST",
+                url:'/posts/like',
+                data:{post_id:post_id,csrfmiddlewaretoken:window.CSRF_TOKEN}
+            })
+            window.location.href="http://127.0.0.1:8000/users/"
+        })
+    </script>
 {% endblock%}
