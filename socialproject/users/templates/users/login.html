@@ -15,6 +15,12 @@
             <button class="text-white bg-green-500 px-5 py-2 mt-5" type="submit">Login</button>
         </form>
     </div>
-    
+    {% if messages %}
+    <ul class="messages px-10">
+        {% for message in messages %}
+            <h1 class="text-red-700">{{message}}</h1>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <p class="px-10 py-10"><a class="text-indigo-500" href="{% url 'password_reset' %}">Forgot password? Click here to reset</a></p>
 {% endblock%}

@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import LoginForm, UserRegisterForm, UserEditForm, ProfileEditForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Profile
 from posts.models import Post
+from django.contrib import messages
 
 
 # Create your views here.
@@ -18,9 +19,12 @@ def user_login(request):
 
             if user is not None:
                 login(request, user)
-                return HttpResponse("user authenticated and logged in")
+                # change here to change login
+                messages.success(request, 'User authenticated and logged in.')
+                return redirect('feed')
             else:
-                return HttpResponse("Invalid credentials")
+                messages.success(request,"Invalid credentials")
+                return redirect('login')
     else:
         form = LoginForm()
     return render(request, "users/login.html", {"form": form})
